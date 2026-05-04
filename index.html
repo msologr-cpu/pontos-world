@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pontos AI — Цифровой языковой мозг понтийского греческого</title>
+  <meta name="description" content="Pontos AI Language Engine — цифровое сохранение, оцифровка и изучение понтийского греческого языка. 36 000+ слов, 2600 лет истории." />
+  <meta property="og:title" content="Pontos AI — Pontic Greek Language Engine" />
+  <meta property="og:description" content="36,000+ words. 2,600 years of history. The digital brain of the Pontic Greek language." />
+  <meta property="og:url" content="https://pontos.world" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="logo-greek">Π</span>
+      <span class="logo-text">Pontos AI</span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#roadmap" data-i18n="nav_roadmap">Дорожная карта</a>
+      <a href="#sources" data-i18n="nav_sources">Источники</a>
+      <a href="#team" data-i18n="nav_team">Команда</a>
+      <a href="#support" data-i18n="nav_support">Поддержать</a>
+      <a href="#chat" data-i18n="nav_chat">Pontos AI</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn active" data-lang="ru">RU</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="el">ΕΛ</button>
+        <button class="lang-btn" data-lang="tr">TR</button>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="seaCanvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="map-container" id="mapContainer">
+    <svg id="pontusMap" viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Black Sea simplified shape -->
+      <defs>
+        <radialGradient id="seaGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#0a2a4a" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#020d1a" stop-opacity="1"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="goldGlow">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Black Sea body -->
+      <path id="blackSea" d="M 80,180 C 100,150 160,130 220,125 C 290,118 340,110 410,108 C 480,106 540,112 600,120 C 660,128 710,140 750,155 C 790,170 820,185 830,200 C 840,215 835,230 820,245 C 800,265 770,275 730,282 C 690,289 650,292 610,295 C 570,298 530,300 490,298 C 450,296 410,290 370,285 C 330,280 290,278 250,280 C 210,282 170,288 140,295 C 110,302 85,308 75,295 C 65,280 60,250 70,220 C 72,210 75,195 80,180 Z"
+        fill="url(#seaGrad)" stroke="#1a4a7a" stroke-width="1.5"/>
+      <!-- Coastline glow -->
+      <path d="M 80,180 C 100,150 160,130 220,125 C 290,118 340,110 410,108 C 480,106 540,112 600,120 C 660,128 710,140 750,155 C 790,170 820,185 830,200 C 840,215 835,230 820,245 C 800,265 770,275 730,282 C 690,289 650,292 610,295 C 570,298 530,300 490,298 C 450,296 410,290 370,285 C 330,280 290,278 250,280 C 210,282 170,288 140,295 C 110,302 85,308 75,295 C 65,280 60,250 70,220 C 72,210 75,195 80,180 Z"
+        fill="none" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.4"/>
+
+      <!-- Pontic coast highlight (south coast = Pontus) -->
+      <path d="M 600,120 C 640,118 680,122 720,130 C 760,138 800,150 825,168 C 835,180 838,194 830,200"
+        fill="none" stroke="#c9a84c" stroke-width="2" filter="url(#goldGlow)" stroke-opacity="0.9"/>
+
+      <!-- Cities - Pontic -->
+      <!-- Trebizond / Trapezus -->
+      <g class="map-city" data-city="trebizond">
+        <circle cx="756" cy="155" r="5" fill="#c9a84c" filter="url(#goldGlow)"/>
+        <circle cx="756" cy="155" r="10" fill="#c9a84c" fill-opacity="0.15" class="pulse-ring"/>
+        <text x="766" y="150" class="city-label" font-size="10">Τραπεζοῦς</text>
+        <text x="766" y="162" class="city-label-sub" font-size="8">Trebizond</text>
+      </g>
+      <!-- Sinope -->
+      <g class="map-city" data-city="sinope">
+        <circle cx="540" cy="118" r="4" fill="#c9a84c" filter="url(#goldGlow)"/>
+        <circle cx="540" cy="118" r="8" fill="#c9a84c" fill-opacity="0.15" class="pulse-ring"/>
+        <text x="550" y="115" class="city-label" font-size="10">Σινώπη</text>
+        <text x="550" y="127" class="city-label-sub" font-size="8">Sinope</text>
+      </g>
+      <!-- Amisos -->
+      <g class="map-city" data-city="amisos">
+        <circle cx="630" cy="130" r="4" fill="#c9a84c" filter="url(#goldGlow)"/>
+        <text x="640" y="127" class="city-label" font-size="10">Ἀμισός</text>
+        <text x="640" y="139" class="city-label-sub" font-size="8">Samsun</text>
+      </g>
+      <!-- Kerasous -->
+      <g class="map-city" data-city="kerasous">
+        <circle cx="700" cy="140" r="3.5" fill="#8a9fc0"/>
+        <text x="710" y="138" class="city-label" font-size="9">Κερασοῦς</text>
+      </g>
+      <!-- Konstantinopolis -->
+      <g class="map-city" data-city="constantinople">
+        <circle cx="115" cy="200" r="4" fill="#9b8fd4" filter="url(#goldGlow)"/>
+        <text x="90" y="218" class="city-label" font-size="9">Κωνσταντινούπολις</text>
+      </g>
+      <!-- Crimea label -->
+      <text x="380" y="148" class="region-label" font-size="11" fill="#8a9fc0" opacity="0.7">Κριμαία / Крым</text>
+
+      <!-- Pontus region label -->
+      <text x="620" y="200" class="region-label" font-size="13" fill="#c9a84c" opacity="0.6" font-style="italic">PONTUS</text>
+      <text x="635" y="215" class="region-label" font-size="9" fill="#c9a84c" opacity="0.4">Εύξεινος Πόντος</text>
+
+      <!-- Black Sea label -->
+      <text x="360" y="225" class="region-label" font-size="16" fill="#2a5a8a" opacity="0.5" letter-spacing="4">PONTUS EUXINUS</text>
+
+      <!-- Kavkaz / Russia - diaspora -->
+      <g class="map-city" data-city="sochi">
+        <circle cx="760" cy="200" r="3" fill="#6ab04c" filter="url(#glow)"/>
+        <text x="770" y="203" class="city-label" font-size="8" fill="#6ab04c">Красная Поляна</text>
+      </g>
+
+      <!-- Wave lines decoration -->
+      <g opacity="0.15" stroke="#4a8ab4" stroke-width="0.8" fill="none">
+        <path d="M 200,210 Q 230,205 260,210 Q 290,215 320,210"/>
+        <path d="M 340,230 Q 380,225 420,230 Q 460,235 500,230"/>
+        <path d="M 180,250 Q 220,245 260,250 Q 300,255 340,250"/>
+        <path d="M 450,205 Q 490,200 530,205 Q 570,210 610,205"/>
+      </g>
+
+      <!-- Year marker -->
+      <text x="80" y="340" font-family="Cinzel" font-size="11" fill="#c9a84c" opacity="0.5">VII в. до н.э. — наши дни</text>
+    </svg>
+
+    <!-- Map tooltip -->
+    <div class="map-tooltip" id="mapTooltip"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge" data-i18n="hero_badge">Проект сохранения языка</div>
+    <h1 class="hero-title">
+      <span class="hero-greek">Πόντος AI</span>
+      <span class="hero-sub" data-i18n="hero_sub">Language Engine</span>
+    </h1>
+    <p class="hero-desc" data-i18n="hero_desc">
+      Цифровой мозг понтийского греческого языка.<br/>
+      36 000+ слов · 2 600 лет истории · 20 диалектных регионов
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num" data-target="36000">0</span>
+        <span class="stat-label" data-i18n="stat_words">слов в базе</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="2600">0</span>
+        <span class="stat-label" data-i18n="stat_years">лет истории</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="20">0</span>
+        <span class="stat-label" data-i18n="stat_dialects">диалектных регионов</span>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#chat" class="btn-primary" data-i18n="hero_cta">Поговорить с Pontos AI</a>
+      <a href="#roadmap" class="btn-ghost" data-i18n="hero_cta2">Дорожная карта</a>
+    </div>
+    <p class="hero-quote">"Ζήτω ο Πόντος" — <em data-i18n="hero_quote_tr">Да здравствует Понт</em></p>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-header">
+    <span class="section-eyebrow" data-i18n="roadmap_eyebrow">Архитектура проекта</span>
+    <h2 data-i18n="roadmap_title">Дорожная карта</h2>
+    <p data-i18n="roadmap_sub">20 этапов от сбора источников до живого диалога</p>
+  </div>
+  <div class="roadmap-container">
+    <div class="roadmap-line"></div>
+    <div class="roadmap-grid" id="roadmapGrid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section id="sources">
+  <div class="section-header">
+    <span class="section-eyebrow" data-i18n="sources_eyebrow">База знаний</span>
+    <h2 data-i18n="sources_title">Литература и источники</h2>
+    <p data-i18n="sources_sub">Академические словари, фольклорные архивы и ожидаемые издания</p>
+  </div>
+  <div class="sources-grid" id="sourcesGrid">
+    <!-- Filled by JS -->
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-header">
+    <span class="section-eyebrow" data-i18n="team_eyebrow">Кто строит проект</span>
+    <h2 data-i18n="team_title">Команда</h2>
+    <p data-i18n="team_sub">Носители, учёные, инженеры — хранители языка</p>
+  </div>
+  <div class="team-grid" id="teamGrid">
+    <!-- Filled by JS -->
+  </div>
+  <div class="team-join">
+    <p data-i18n="team_join_text">Вы носитель языка, филолог или исследователь?</p>
+    <a href="https://t.me/Solomonidis" target="_blank" class="btn-primary" data-i18n="team_join_btn">Присоединиться к проекту</a>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <div class="support-inner">
+    <span class="section-eyebrow" data-i18n="support_eyebrow">Помочь проекту</span>
+    <h2 data-i18n="support_title">Поддержать</h2>
+    <p class="support-desc" data-i18n="support_desc">
+      Раздел поддержки в разработке. Сейчас лучший способ помочь — поделиться проектом или связаться напрямую.
+    </p>
+    <div class="support-cards">
+      <div class="support-card">
+        <div class="support-icon">🗣️</div>
+        <h3 data-i18n="support_card1_title">Носитель языка</h3>
+        <p data-i18n="support_card1_desc">Запишите слова, фразы, песни, пословицы — ваш голос бесценен</p>
+        <a href="https://t.me/Solomonidis" target="_blank" class="btn-ghost-sm" data-i18n="support_contact">Написать</a>
+      </div>
+      <div class="support-card">
+        <div class="support-icon">🔬</div>
+        <h3 data-i18n="support_card2_title">Исследователь</h3>
+        <p data-i18n="support_card2_desc">Помогите с проверкой данных, этимологией, грамматикой</p>
+        <a href="https://t.me/Solomonidis" target="_blank" class="btn-ghost-sm" data-i18n="support_contact">Написать</a>
+      </div>
+      <div class="support-card support-card-wip">
+        <div class="support-icon">💛</div>
+        <h3 data-i18n="support_card3_title">Финансово</h3>
+        <p data-i18n="support_card3_desc">Платёжный модуль скоро. Проект строится на энтузиазме и любви к языку</p>
+        <span class="wip-badge" data-i18n="wip">В разработке</span>
+      </div>
+    </div>
+    <div class="support-links">
+      <a href="https://evera.world" target="_blank" class="ext-link">evera.world</a>
+      <span class="ext-sep">·</span>
+      <a href="https://persei.io" target="_blank" class="ext-link">persei.io</a>
+      <span class="ext-sep">·</span>
+      <a href="https://persei.io/library" target="_blank" class="ext-link" data-i18n="link_library">Библиотека Вечных</a>
+    </div>
+  </div>
+</section>
+
+<!-- CHAT -->
+<section id="chat">
+  <div class="section-header">
+    <span class="section-eyebrow">Pontos AI · Dictionary Mode</span>
+    <h2 data-i18n="chat_title">Поговорить с Понтом</h2>
+    <p data-i18n="chat_sub">36 000+ слов · Греческий · Кириллица · Латиница · Турецкий</p>
+  </div>
+  <div class="chat-wrapper">
+    <div class="chat-frame-container">
+      <div class="chat-frame-header">
+        <div class="chat-dot red"></div>
+        <div class="chat-dot yellow"></div>
+        <div class="chat-dot green"></div>
+        <span class="chat-frame-url">persei.io — Πόντος AI</span>
+      </div>
+      <iframe
+        id="pontosChat"
+        src="https://persei.io/chat/pontos"
+        title="Pontos AI Chat"
+        allow="microphone"
+        loading="lazy"
+      ></iframe>
+    </div>
+    <div class="chat-hint">
+      <p data-i18n="chat_hint">Введите слово на любом алфавите — русском, греческом, латинском или турецком</p>
+      <div class="chat-examples">
+        <span class="chat-example" onclick="sendToChat('νερόν')">νερόν</span>
+        <span class="chat-example" onclick="sendToChat('вода')">вода</span>
+        <span class="chat-example" onclick="sendToChat('aman')">aman</span>
+        <span class="chat-example" onclick="sendToChat('Τραπεζοῦς')">Τραπεζοῦς</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-greek large">Π</span>
+      <div>
+        <div class="footer-name">Pontos AI Language Engine</div>
+        <div class="footer-tagline">Ζήτω ο Πόντος · <span data-i18n="footer_tagline">Да здравствует Понт</span></div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="https://evera.world" target="_blank">Evera.world</a>
+      <a href="https://persei.io" target="_blank">Persei.io</a>
+      <a href="https://persei.io/library" target="_blank" data-i18n="link_library">Библиотека Вечных</a>
+      <a href="https://github.com/msologr-cpu/pontos-world" target="_blank">GitHub</a>
+    </div>
+    <div class="footer-credit">
+      <span data-i18n="footer_by">Создан</span> Maximian Solomonidis
+      <br/><span class="footer-village">Красная Поляна, Сочи · Парти, Трапезунд</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
