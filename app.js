@@ -1,3 +1,6 @@
+/* === TELEGRAM GROUP === */
+const TG_GROUP = 'https://t.me/+ZUxz9TkYneZmZDFi';
+
 /* === i18n === */
 const i18n = {
   ru: {
@@ -180,29 +183,106 @@ function renderRoadmap() {
 }
 
 /* === SOURCES DATA === */
-const sources = [
-  { type:'Словарь', title:'Λεξικόν της Ποντικής Διαλέκτου', author:'Α. Παπαδόπουλος', desc:'Академический словарь понтийского диалекта Пападопулоса — главный научный источник', status:'available' },
-  { type:'Словарь', title:'Ποντιακά — Λεξικόν', author:'Γ. Κανδηλάπτης', desc:'Лексикон Кандилаптиса с диалектными вариантами', status:'available' },
-  { type:'Архив', title:'Cambridge Romeyka Project', author:'Ioanna Sitaridou', desc:'Живые диалекты во внутренних районах Турции. Лингвистические полевые исследования', status:'available' },
-  { type:'Фольклор', title:'Ποντιακά Τραγούδια', author:'Различные источники', desc:'Сборники понтийских песен: тексты, варианты, переводы, исполнители', status:'available' },
-  { type:'Грамматика', title:'Grammatik des pontischen Griechisch', author:'R.M. Dawkins (1916)', desc:'Первая академическая грамматика понтийского — документация цицакизма и морфологии', status:'available' },
-  { type:'Книга', title:'Полная морфология понтийского глагола', author:'В разработке', desc:'Систематизация всех глагольных форм и диалектных вариантов по корпусу Pontos AI', status:'pending' },
-  { type:'Книга', title:'Атлас понтийских диалектов', author:'В разработке', desc:'Географическое распределение лексических и фонетических особенностей по регионам', status:'pending' },
-  { type:'Книга', title:'Фонетический справочник', author:'В разработке', desc:'Транскрипция, транслитерация, произношение — мост между алфавитами', status:'pending' },
-  { type:'Книга', title:'Корпус понтийской поэзии', author:'В разработке', desc:'Песни, элегии, лирика — параллельные переводы с грамматическим разбором', status:'pending' },
+// IN MATRIX — already digitized and used in the 1.5M-entry dataset
+const sourcesInMatrix = [
+  {
+    type:'Диалект · Санта / Халдия',
+    title:'Stathis Athanasiadis (Геростатис)',
+    author:'Носитель диалекта Санта (Халдия)',
+    desc:'Основной источник для 21 000+ лексических единиц. Диалект Санта считается наиболее архаичным и консервативным из задокументированных понтийских разновидностей.',
+    status:'available'
+  },
+  {
+    type:'Диалект · Трапезунд / Мацука',
+    title:'Stylianos Kykkidis (Хапсикёй / Мацука)',
+    author:'Носитель трапезундского диалекта',
+    desc:'Представляет исторический центр Трапезундского региона (Мацука). Второй базовый диалект матрицы — наиболее широко используемый в диаспоре.',
+    status:'available'
+  },
+  {
+    type:'Лексикография',
+    title:'Miltiadis Kyriakopoulos',
+    author:'Лексикограф',
+    desc:'Общие лексикографические труды по речи понтийских беженцев, преимущественно из Халдии и Трапезунда.',
+    status:'available'
+  },
+  {
+    type:'Лексикография',
+    title:'Polychronis Mavrokefalidis',
+    author:'Лексикограф',
+    desc:'Документация речи понтийских беженцев. Дополнительный слой лексических вариантов в матрице.',
+    status:'available'
+  },
+];
+
+// AWAITED — critical academic works, not yet in machine-readable form
+const sourcesAwaited = [
+  {
+    type:'Грамматика · ПРИОРИТЕТ',
+    title:'Historical Grammar of the Pontic Dialect',
+    author:'Anthimos Papadopoulos, 1955',
+    desc:'Важнейший академический грамматический труд. Не существует в машиночитаемом формате. Необходим для формализации морфологической модели и синтаксических правил.',
+    status:'pending'
+  },
+  {
+    type:'Словарь · ПРИОРИТЕТ',
+    title:'Historical Dictionary of the Pontic Dialect',
+    author:'Anthimos Papadopoulos, 1958–1961',
+    desc:'Главный исторический словарь понтийского. Не оцифрован. Ключевой источник для этимологии и семантического слоя.',
+    status:'pending'
+  },
+  {
+    type:'Грамматика',
+    title:'Grammar of the Greek Dialect of Pontus',
+    author:'Dimitrios Ikonomidis, 1958',
+    desc:'Академическая грамматика понтийского. Недоступна в структурированном цифровом виде для вычислительного использования.',
+    status:'pending'
+  },
+  {
+    type:'Грамматика',
+    title:'Aspects Pontics: Grammaire du Pontique',
+    author:'George Drettas, 1997',
+    desc:'Французский академический труд по понтийской грамматике. Единственная современная полная грамматика. Не оцифрована.',
+    status:'pending'
+  },
+  {
+    type:'Словарь',
+    title:'Romeika–Turkish Dictionary',
+    author:'Vahit Tursun (в переговорах с автором)',
+    desc:'Словарь живого ромейского (Romeyka) — понтийских диалектов, сохранившихся на территории Турции. Автор контактирован.',
+    status:'pending'
+  },
+  {
+    type:'Корпус · полевые исследования',
+    title:'Cambridge Romeyka Project',
+    author:'Prof. Ioanna Sitaridou (переписка)',
+    desc:'Живые диалекты Romeyka во внутренних районах Турции (Офис, Тоня, Sürmene). Полевые записи и лингвистический корпус. Запрос отправлен в Кембридж.',
+    status:'pending'
+  },
 ];
 
 function renderSources() {
-  document.getElementById('sourcesGrid').innerHTML = sources.map(s => `
+  const grid = document.getElementById('sourcesGrid');
+  const inMatrixHTML = `
+    <div class="sources-section-label">В лексической матрице <span class="sources-count">1.5M+ записей · 36 000+ слов · 148 000+ вариантов</span></div>
+    ${sourcesInMatrix.map(s => sourceCard(s)).join('')}
+    <div class="sources-section-label sources-section-label--awaited">Ожидаются · Не оцифрованы <span class="sources-count">Критически важны для грамматической модели</span></div>
+    ${sourcesAwaited.map(s => sourceCard(s)).join('')}
+  `;
+  grid.innerHTML = inMatrixHTML;
+}
+
+function sourceCard(s) {
+  return `
     <div class="source-card ${s.status === 'pending' ? 'pending' : ''}">
       <div class="source-header">
         <span class="source-type">${s.type}</span>
-        <span class="source-status ${s.status}">${s.status === 'available' ? 'Доступен' : 'Ожидается'}</span>
+        <span class="source-status ${s.status}">${s.status === 'available' ? 'В базе' : 'Ожидается'}</span>
       </div>
       <h3>${s.title}</h3>
       <div class="source-author">${s.author}</div>
       <div class="source-desc">${s.desc}</div>
-    </div>`).join('');
+    </div>`;
 }
 
 /* === TEAM DATA === */
@@ -223,6 +303,10 @@ function renderTeam() {
       <p>${t.desc}</p>
       <div class="team-slots">${t.slots}</div>
     </div>`).join('');
+  // patch all telegram links
+  document.querySelectorAll('a[href*="t.me/Solomonidis"], a[href*="t.me/+ZUxz"]').forEach(a => {
+    a.href = TG_GROUP;
+  });
 }
 
 /* === COUNTER ANIMATION === */

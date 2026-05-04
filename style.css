@@ -274,6 +274,15 @@ section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
   display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px; max-width: 1200px; margin: 0 auto; padding: 0 24px;
 }
+.sources-section-label {
+  grid-column: 1 / -1;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); padding: 10px 0 4px;
+  border-bottom: 1px solid var(--border); margin-bottom: 4px;
+  display: flex; align-items: center; gap: 12px;
+}
+.sources-section-label--awaited { color: var(--silver); margin-top: 16px; }
+.sources-count { font-size: 12px; letter-spacing: 0; text-transform: none; color: var(--text-dim); }
 .source-card {
   background: var(--card-bg); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 24px;
@@ -350,26 +359,43 @@ section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
 
 /* === CHAT === */
 #chat { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
-.chat-wrapper { display: grid; grid-template-columns: 1fr 280px; gap: 24px; align-items: start; }
-.chat-frame-container {
+.chat-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
+.chat-launch-card {
+  background: var(--card-bg); border: 1px solid var(--border);
   border-radius: var(--radius); overflow: hidden;
-  border: 1px solid var(--border);
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
-.chat-frame-header {
-  background: var(--sea-mid); padding: 10px 16px;
-  display: flex; align-items: center; gap: 8px;
-  border-bottom: 1px solid var(--border);
+.chat-launch-inner {
+  padding: 48px 40px; text-align: center;
+  background: radial-gradient(ellipse at top, rgba(201,168,76,0.06) 0%, transparent 70%);
 }
-.chat-dot { width: 10px; height: 10px; border-radius: 50%; }
-.chat-dot.red { background: #ff5f56; }
-.chat-dot.yellow { background: #ffbd2e; }
-.chat-dot.green { background: #27c93f; }
-.chat-frame-url { font-size: 12px; color: var(--text-dim); margin-left: 8px; }
-#pontosChat { width: 100%; height: 580px; border: none; display: block; background: var(--sea-deep); }
-.chat-hint { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
-.chat-hint p { font-size: 14px; color: var(--text-dim); margin-bottom: 20px; }
-.chat-examples { display: flex; flex-wrap: wrap; gap: 8px; }
+.chat-logo-big {
+  font-family: var(--font-display); font-size: 64px;
+  color: var(--gold); text-shadow: 0 0 40px var(--gold-dim);
+  margin-bottom: 8px;
+}
+.chat-launch-inner h3 {
+  font-family: var(--font-display); font-size: 24px;
+  color: var(--text); margin-bottom: 14px;
+}
+.chat-launch-inner p { font-size: 15px; color: var(--text-dim); margin-bottom: 24px; }
+.chat-open-btn { font-size: 16px; padding: 15px 36px; display: inline-block; margin-bottom: 20px; }
+.chat-disclaimer { font-size: 12px; color: var(--text-dim); }
+.chat-disclaimer a { color: var(--silver); }
+.chat-disclaimer a:hover { color: var(--gold); }
+.chat-info { display: flex; flex-direction: column; gap: 16px; }
+.chat-info-card {
+  background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 20px;
+  display: flex; flex-direction: column; gap: 6px;
+  transition: border-color 0.2s;
+}
+.chat-info-card:hover { border-color: var(--gold-dim); }
+.chat-info-card.chat-info-wip { opacity: 0.6; border-style: dashed; }
+.chat-info-icon { font-size: 22px; }
+.chat-info-card h4 { font-size: 14px; color: var(--text); }
+.chat-info-card p { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+.chat-examples { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
 .chat-example {
   padding: 6px 14px; background: rgba(201,168,76,0.08);
   border: 1px solid var(--gold-dim); border-radius: 20px;
@@ -377,6 +403,9 @@ section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
   transition: all 0.2s;
 }
 .chat-example:hover { background: rgba(201,168,76,0.18); }
+@media (max-width: 900px) {
+  .chat-wrapper { grid-template-columns: 1fr; }
+}
 
 /* === FOOTER === */
 footer {
