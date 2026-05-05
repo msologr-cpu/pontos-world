@@ -5,50 +5,39 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "language": "ru"
 }/*EDITMODE-END*/;
 
+/* Parse initial state from URL path: /lang/section */
+function parseURL() {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  const parts = path.split('/').filter(Boolean);
+  let lang = null;
+  let section = 'home';
+  const validLangs = ['ru', 'en', 'el', 'tr'];
+  const validSections = ['roadmap', 'sources', 'team', 'support', 'chat'];
+
+  if (parts.length >= 1 && validLangs.includes(parts[0])) {
+    lang = parts[0];
+    if (parts.length >= 2 && validSections.includes(parts[1])) {
+      section = parts[1];
+    }
+  }
+  // Also check INITIAL_LANG/INITIAL_SECTION from SSR pages
+  if (!lang && window.INITIAL_LANG) lang = window.INITIAL_LANG;
+  if (window.INITIAL_SECTION && window.INITIAL_SECTION !== 'home') section = window.INITIAL_SECTION;
+
+  return { lang, section };
+}
+
 function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  
-  const [lang, setLangState] = useState(() => {
-    if (typeof window !== 'undefined' && window.INITIAL_LANG) return window.INITIAL_LANG;
-    const params = new URLSearchParams(window.location.search);
-    return params.get('lang') || tweaks.language || 'ru';
-  });
+  const initial = parseURL();
 
-  const [section, setSectionState] = useState(() => {
-    if (typeof window !== 'undefined' && window.INITIAL_SECTION) return window.INITIAL_SECTION;
-    const path = window.location.pathname.replace(/\/+$/, '') || '/';
-    const parts = path.split('/').filter(Boolean);
-    let s = parts.length > 1 ? parts[1] : (parts.length === 1 && !['ru','en','el','tr'].includes(parts[0]) ? parts[0] : 'home');
-    if (window.location.hash) s = window.location.hash.slice(1);
-    return s === '' ? 'home' : s;
-  });
-
+  const [lang, setLangState] = useState(initial.lang || tweaks.language || 'ru');
+  const [page, setPage] = useState(initial.section); // 'home' | 'chat' | 'roadmap' | etc
   const [theme, setThemeState] = useState(tweaks.theme || 'dark');
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname.replace(/\/+$/, '') || '/';
-      const parts = path.split('/').filter(Boolean);
-      if (parts.length > 0 && ['ru','en','el','tr'].includes(parts[0])) {
-        setLangState(parts[0]);
-        setSectionState(parts.length > 1 ? parts[1] : 'home');
-      }
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
-  useEffect(() => {
-    if (section && section !== 'home' && section !== 'chat') {
-      setTimeout(() => {
-        const el = document.getElementById(section);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
-    } else if (section === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }, [section]);
+  // Track a scroll target separately from the page view
+  const scrollTargetRef = useRef(null);
 
   useEffect(() => { setThemeState(tweaks.theme || 'dark'); }, [tweaks.theme]);
 
@@ -57,21 +46,63 @@ function App() {
     document.documentElement.setAttribute('lang', lang);
   }, [theme, lang]);
 
+  // Handle browser back/forward
+  useEffect(() => {
+    const handlePop = () => {
+      const { lang: newLang, section: newSection } = parseURL();
+      if (newLang) setLangState(newLang);
+      setPage(newSection);
+    };
+    window.addEventListener('popstate', handlePop);
+    return () => window.removeEventListener('popstate', handlePop);
+  }, []);
+
+  // Scroll to section after render (only for non-chat, non-home sections on main page)
+  useEffect(() => {
+    if (page !== 'home' && page !== 'chat') {
+      // Use requestAnimationFrame to ensure DOM is painted
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const el = document.getElementById(page);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    }
+  }, [page]);
+
+  // Navigate function used by all links
   const navigateTo = (newLang, newSection) => {
     setLangState(newLang);
-    setSectionState(newSection);
     setTweak('language', newLang);
-    const url = `/${newLang}${newSection && newSection !== 'home' ? '/' + newSection : ''}`;
-    window.history.pushState({}, '', url);
+    
+    if (newSection === 'home') {
+      setPage('home');
+      window.history.pushState({}, '', `/${newLang}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (newSection === 'chat') {
+      setPage('chat');
+      window.history.pushState({}, '', `/${newLang}/chat`);
+      window.scrollTo({ top: 0 });
+    } else {
+      // For roadmap, sources, team, support — always show main page and scroll
+      setPage(newSection);
+      window.history.pushState({}, '', `/${newLang}/${newSection}`);
+    }
   };
 
-  const setLang = (l) => navigateTo(l, section);
+  const setLang = (l) => {
+    setLangState(l);
+    setTweak('language', l);
+    const url = `/${l}${page !== 'home' ? '/' + page : ''}`;
+    window.history.pushState({}, '', url);
+  };
+  
   const setTheme = (t) => { setThemeState(t); setTweak('theme', t); };
 
   useReveal();
 
   const content = PONTOS_CONTENT[lang] || PONTOS_CONTENT.ru;
-  const isChat = section === 'chat';
+  const isChat = page === 'chat';
 
   return (
     <>
@@ -86,9 +117,9 @@ function App() {
           navigateTo={navigateTo}
         />
         {isChat ? (
-          <div style={{ paddingTop: 80, paddingBottom: 40, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <section id="chat" className="chat-section" style={{ paddingTop: 100 }}>
             <ChatBlock content={content} />
-          </div>
+          </section>
         ) : (
           <>
             <Hero content={content} navigateTo={navigateTo} lang={lang} />

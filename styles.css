@@ -105,6 +105,7 @@ body { min-height: 100vh; line-height: 1.4; }
 
 .menu-btn { display: none; background: none; border: none; color: var(--fg); cursor: pointer; }
 .nav-mobile { display: none; }
+.nav-mobile-overlay { display: none; }
 
 /* ====== Hero ====== */
 .hero {

@@ -290,7 +290,7 @@ function Roadmap({ content }) {
 /* ====== AI Chat — real Pontos AI via persei.io ====== */
 function ChatBlock({ content }) {
   return (
-    <section id="chat" className="chat-section" style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <>
       <div className="reveal">
         <div className="section-label">{content.chat.label}</div>
         <h2 className="section-title">
@@ -299,7 +299,7 @@ function ChatBlock({ content }) {
         <p className="section-lede">{content.chat.desc}</p>
       </div>
 
-      <div className="chat-card reveal">
+      <div className="chat-card reveal" style={{ marginTop: 40 }}>
         <div className="chat-card-head">
           <div className="chat-avatar">Π</div>
           <div>
@@ -313,7 +313,7 @@ function ChatBlock({ content }) {
         <div className="chat-body">
           <div className="chat-bubble">
             <div className="chat-bubble-meta">SYSTEM</div>
-            {content.chat.systemMsg || 'Γεια σου! Я — цифровой мозг понтийского языка. Я знаю более 36 000 слов, понимаю 20 диалектов и могу объяснить происхождение любого термина. О чем бы вы хотели узнать?'}
+            {content.chat.systemMsg || 'Γεια σου! Я — цифровой мозг понтийского языка.'}
           </div>
           <div className="chat-examples">
             {content.chat.examples.map((ex, i) => (
@@ -326,7 +326,7 @@ function ChatBlock({ content }) {
           </div>
         </div>
       </div>
-    </section>
+    </>
   );
 }
 
