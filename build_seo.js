@@ -58,17 +58,23 @@ languages.forEach(lang => {
     // Replace title
     let html = template.replace(/<title>.*?<\/title>/, `<title>${meta.title}</title>`);
     
-    // Inject OpenGraph meta tags
+    // Insert <base href="/"> FIRST thing in <head> so all relative paths resolve from root
+    html = html.replace('<head>', `<head>\n  <base href="/" />`);
+
+    // Inject SEO meta tags before </head>
     const ogTags = `
   <meta name="description" content="${meta.desc}" />
   <meta property="og:title" content="${meta.title}" />
   <meta property="og:description" content="${meta.desc}" />
   <meta property="og:type" content="website" />
-  <base href="/" />`;
+  <meta property="og:url" content="https://pontos.world/${lang}${section ? '/' + section : ''}" />`;
 
     html = html.replace('</head>', `${ogTags}\n</head>`);
+
+    // Set lang attribute on html tag
+    html = html.replace('lang="en"', `lang="${lang}"`);
     
-    // Inject global window variables so app.jsx knows where it landed without parsing URL manually
+    // Inject initial state
     const script = `\n  <script>window.INITIAL_LANG = '${lang}'; window.INITIAL_SECTION = '${section || 'home'}';</script>\n`;
     html = html.replace('<div id="root"></div>', `${script}<div id="root"></div>`);
 

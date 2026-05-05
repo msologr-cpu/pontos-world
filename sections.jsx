@@ -291,6 +291,18 @@ function Roadmap({ content }) {
 
 /* ====== AI Chat — real Pontos AI via persei.io ====== */
 function ChatBlock({ content }) {
+  const iframeRef = useRef(null);
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [iframeFailed, setIframeFailed] = useState(false);
+
+  useEffect(() => {
+    // Timeout fallback: if iframe hasn't loaded content in 8s, show fallback
+    const timer = setTimeout(() => {
+      if (!iframeLoaded) setIframeFailed(true);
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, [iframeLoaded]);
+
   return (
     <>
       <div className="reveal">
@@ -301,32 +313,60 @@ function ChatBlock({ content }) {
         <p className="section-lede">{content.chat.desc}</p>
       </div>
 
-      <div className="chat-card reveal" style={{ marginTop: 40 }}>
-        <div className="chat-card-head">
-          <div className="chat-avatar">Π</div>
-          <div>
-            <div className="chat-name">Pontos AI</div>
-            <div className="chat-sub">Language Engine</div>
+      <div className="chat-embed-wrap reveal" style={{ marginTop: 32 }}>
+        {!iframeFailed ? (
+          <div className="chat-iframe-container">
+            <iframe
+              ref={iframeRef}
+              src="https://persei.io/chat/pontos"
+              className="chat-iframe"
+              title="Pontos AI"
+              allow="microphone; clipboard-write"
+              onLoad={() => setIframeLoaded(true)}
+            />
+            {!iframeLoaded && (
+              <div className="chat-iframe-loading">
+                <div className="chat-avatar" style={{ width: 48, height: 48, fontSize: 20 }}>Π</div>
+                <p style={{ marginTop: 16, color: 'var(--dim)', fontSize: 14 }}>Загрузка Pontos AI...</p>
+              </div>
+            )}
           </div>
-          <div className="chat-status">
-            <span className="chat-dot"></span> Online
+        ) : (
+          <div className="chat-card">
+            <div className="chat-card-head">
+              <div className="chat-avatar">Π</div>
+              <div>
+                <div className="chat-name">Pontos AI</div>
+                <div className="chat-sub">Language Engine</div>
+              </div>
+              <div className="chat-status">
+                <span className="chat-dot"></span> Online
+              </div>
+            </div>
+            <div className="chat-body">
+              <div className="chat-bubble">
+                <div className="chat-bubble-meta">SYSTEM</div>
+                {content.chat.systemMsg || 'Γεια σου! Я — цифровой мозг понтийского языка.'}
+              </div>
+              <div className="chat-examples">
+                {content.chat.examples.map((ex, i) => (
+                  <button key={i} className="chat-example">{ex}</button>
+                ))}
+              </div>
+              <div style={{ textAlign: 'center', padding: '24px 0' }}>
+                <a 
+                  href="https://persei.io/chat/pontos" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn btn-gold"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}
+                >
+                  {content.chat.cta} <span className="arrow">→</span>
+                </a>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="chat-body">
-          <div className="chat-bubble">
-            <div className="chat-bubble-meta">SYSTEM</div>
-            {content.chat.systemMsg || 'Γεια σου! Я — цифровой мозг понтийского языка.'}
-          </div>
-          <div className="chat-examples">
-            {content.chat.examples.map((ex, i) => (
-              <button key={i} className="chat-example">{ex}</button>
-            ))}
-          </div>
-          <div className="chat-input-row">
-            <input type="text" className="chat-input" placeholder={content.chat.placeholder} />
-            <button className="btn btn-gold chat-send">{content.chat.cta} <span className="arrow">→</span></button>
-          </div>
-        </div>
+        )}
       </div>
     </>
   );
