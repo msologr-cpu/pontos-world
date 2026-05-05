@@ -69,6 +69,8 @@ img, svg { display: block; }
 .lang-btn.active { color: var(--gold); border-color: var(--gold); background: rgba(201,168,76,0.1); }
 .nav-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
 .nav-toggle span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s; }
+.nav-mobile { display: none; }
+.menu-btn { display: none; }
 
 /* === HERO === */
 #hero {
@@ -469,8 +471,11 @@ footer {
 }
 @media (max-width: 640px) {
   .nav-links { display: none; }
-  .nav-links.open { display: flex; flex-direction: column; position: fixed; top: var(--nav-h); left: 0; right: 0; background: rgba(2,13,26,0.98); padding: 20px; gap: 16px; border-bottom: 1px solid var(--border); }
+  .nav-mobile.open { display: flex; flex-direction: column; position: fixed; top: var(--nav-h); left: 0; right: 0; background: rgba(2,13,26,0.98); padding: 20px; gap: 16px; border-bottom: 1px solid var(--border); z-index: 100; }
+  .nav-mobile a { color: var(--silver); text-decoration: none; font-size: 16px; transition: color 0.2s; }
+  .nav-mobile a:hover { color: var(--gold); }
   .nav-toggle { display: flex; }
+  .menu-btn { display: flex; background: none; border: none; cursor: pointer; color: var(--text); padding: 4px; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
   .footer-credit { text-align: left; }
   .hero-stats { flex-direction: column; }
