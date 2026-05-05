@@ -231,32 +231,36 @@ function Roadmap({ content }) {
         `}} />
         {content.work.items.map((w, i) => (
           <details className="work-details-wrapper" key={i} style={{ borderBottom: '1px solid var(--line)' }}>
-            <summary className="work-item work-summary" style={{ borderBottom: 'none', listStyle: 'none', cursor: 'pointer', outline: 'none' }}>
-              <div className="work-num">{w.num}</div>
-              <div className="work-title">{w.title}</div>
-              <div className="work-desc">{w.desc}</div>
-              <div className="work-tags">
-                {w.tags.map((t, j) => <span className="work-tag" key={j}>{t}</span>)}
-              </div>
-              <div className="work-arrow">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 7 H12 M8 3 L12 7 L8 11" stroke="currentColor" strokeWidth="1.4" fill="none" />
-                </svg>
+            <summary className="work-summary" style={{ borderBottom: 'none', listStyle: 'none', cursor: 'pointer', outline: 'none' }}>
+              <div className="work-item" style={{ borderBottom: 'none', padding: '26px 0' }}>
+                <div className="work-num">{w.num}</div>
+                <div className="work-title">{w.title}</div>
+                <div className="work-desc">{w.desc}</div>
+                <div className="work-tags">
+                  {w.tags.map((t, j) => <span className="work-tag" key={j}>{t}</span>)}
+                </div>
+                <div className="work-arrow">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 2 L7 12 M3 8 L7 12 L11 8" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
               </div>
             </summary>
             {w.details && (
               <div style={{ padding: '0 0 32px 0' }}>
-                <div className="work-details-inner" style={{
-                  padding: '20px 24px',
-                  background: 'rgba(201, 169, 110, 0.05)',
-                  border: '1px solid var(--line)',
-                  borderRadius: '12px',
-                  fontSize: '15px',
-                  color: 'var(--fg)',
-                  lineHeight: '1.6'
-                }}>
-                  {w.details}
-                </div>
+                <div 
+                  className="work-details-inner" 
+                  style={{
+                    padding: '20px 24px',
+                    background: 'rgba(201, 169, 110, 0.05)',
+                    border: '1px solid var(--line)',
+                    borderRadius: '12px',
+                    fontSize: '15px',
+                    color: 'var(--fg)',
+                    lineHeight: '1.6'
+                  }}
+                  dangerouslySetInnerHTML={{ __html: w.details }}
+                />
               </div>
             )}
           </details>
