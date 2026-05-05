@@ -268,84 +268,6 @@ function Roadmap({ content }) {
 
 /* ====== AI Chat — real Pontos AI via persei.io ====== */
 function ChatBlock({ content }) {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [streamText, setStreamText] = useState('');
-  const bodyRef = useRef(null);
-  const inputRef = useRef(null);
-  const examples = content.chat.examples;
-
-  // Auto-scroll on new messages
-  useEffect(() => {
-    if (bodyRef.current) {
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-    }
-  }, [messages, streamText]);
-
-  const sendMessage = async (text) => {
-    const userText = (text || input).trim();
-    if (!userText || loading) return;
-    setInput('');
-    setLoading(true);
-    setStreamText('');
-
-    const newMessages = [...messages, { role: 'user', content: userText }];
-    setMessages(newMessages);
-
-    try {
-      const res = await fetch('https://persei.io/api/openrouter-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash-preview',
-          eternalId: 'pontos',
-          stream: true,
-          messages: newMessages.map(m => ({ role: m.role, content: m.content })),
-          max_tokens: 1200,
-          temperature: 0.7,
-        }),
-      });
-
-      if (!res.ok) throw new Error('Network error ' + res.status);
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let accumulated = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const data = line.slice(6).trim();
-          if (data === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(data);
-            const delta = parsed.choices?.[0]?.delta?.content || '';
-            accumulated += delta;
-            setStreamText(accumulated);
-          } catch (_) {}
-        }
-      }
-
-      setMessages(prev => [...prev, { role: 'assistant', content: accumulated }]);
-      setStreamText('');
-    } catch (err) {
-      setMessages(prev => [...prev, { role: 'assistant', content: '⚠️ ' + err.message }]);
-      setStreamText('');
-    } finally {
-      setLoading(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
-  };
-
-  const handleKey = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  };
-
   return (
     <section id="chat" className="chat-section">
       <div className="reveal">
@@ -355,74 +277,15 @@ function ChatBlock({ content }) {
         </h2>
       </div>
 
-      <div className="chat-card reveal">
-        <div className="chat-card-head">
-          <div className="chat-avatar">Π</div>
-          <div>
-            <div className="chat-name">Pontos AI</div>
-            <div className="chat-sub mono">{content.chat.desc}</div>
-          </div>
-          <div className="chat-status mono">
-            <span className={`chat-dot ${loading ? 'pulsing' : ''}`} />
-            {loading ? '...' : 'online'}
-          </div>
-        </div>
-
-        <div className="chat-body" ref={bodyRef} style={{ overflowY: 'auto', maxHeight: 420 }}>
-          {/* Welcome bubble */}
-          {messages.length === 0 && (
-            <div className="chat-bubble">
-              <div className="chat-bubble-meta mono">Pontos AI · {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
-              <div>{content.chat.placeholder}</div>
-            </div>
-          )}
-
-          {/* Message history */}
-          {messages.map((m, i) => (
-            <div key={i} className={`chat-bubble ${m.role === 'user' ? 'chat-bubble-user' : ''}`}>
-              <div className="chat-bubble-meta mono">
-                {m.role === 'user' ? content.chat.you || 'You' : 'Pontos AI'} · {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
-              </div>
-              <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{m.content}</div>
-            </div>
-          ))}
-
-          {/* Streaming response */}
-          {streamText && (
-            <div className="chat-bubble">
-              <div className="chat-bubble-meta mono">Pontos AI · typing…</div>
-              <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{streamText}<span className="chat-cursor">▌</span></div>
-            </div>
-          )}
-
-          {/* Example chips — show only at start */}
-          {messages.length === 0 && (
-            <div className="chat-examples">
-              {examples.map((e, i) => (
-                <button key={i} className="chat-example" onClick={() => sendMessage(e)}>{e}</button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="chat-input-row">
-          <input
-            ref={inputRef}
-            className="chat-input"
-            value={input}
-            onChange={(ev) => setInput(ev.target.value)}
-            onKeyDown={handleKey}
-            placeholder="νερόν · вода · water · su"
-            disabled={loading}
-          />
-          <button
-            className="btn btn-gold chat-send"
-            onClick={() => sendMessage()}
-            disabled={loading || !input.trim()}
-          >
-            {loading ? '…' : content.chat.cta} <span className="arrow">{loading ? '' : '→'}</span>
-          </button>
-        </div>
+      <div className="chat-card reveal" style={{ height: '700px', background: 'transparent', padding: 0, overflow: 'hidden' }}>
+        <iframe
+          src="https://persei.io/chat/pontos"
+          width="100%"
+          height="100%"
+          style={{ border: 'none', borderRadius: '24px' }}
+          title="Pontos AI"
+          allow="microphone"
+        />
       </div>
     </section>
   );
