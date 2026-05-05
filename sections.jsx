@@ -46,7 +46,13 @@ function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen }) {
         </button>
       </div>
 
+      <div className={`nav-mobile-overlay ${mobileOpen ? 'open' : ''}`} onClick={() => setMobileOpen(false)} />
       <div className={`nav-mobile ${mobileOpen ? 'open' : ''}`}>
+        <div className="nav-mobile-langs">
+          {langs.map(({ v, l }) => (
+            <button key={v} className={lang === v ? 'active' : ''} onClick={() => { setLang(v); setMobileOpen(false); }}>{l}</button>
+          ))}
+        </div>
         <a className="nav-link" href="#roadmap" onClick={() => setMobileOpen(false)}>{content.nav.work}</a>
         <a className="nav-link" href="#sources" onClick={() => setMobileOpen(false)}>{content.nav.services}</a>
         <a className="nav-link" href="#team" onClick={() => setMobileOpen(false)}>{content.nav.about}</a>
@@ -384,7 +390,11 @@ function Footer({ content }) {
         {content.footer.cols.map((c, i) => (
           <div className="footer-col" key={i}>
             <h5 className="mono">{c.h}</h5>
-            {c.items.map((it, j) => <a key={j} href="#">{it}</a>)}
+            {c.items.map((it, j) => (
+              <a key={j} href={it.href || "#"} target={it.href?.startsWith('http') ? "_blank" : undefined} rel={it.href?.startsWith('http') ? "noreferrer" : undefined}>
+                {it.label || it}
+              </a>
+            ))}
           </div>
         ))}
       </div>

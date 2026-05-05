@@ -110,9 +110,23 @@ const PONTOS_CONTENT = {
       sub: 'Да здравствует Понт.',
       cta: 'Связаться',
       cols: [
-        { h: 'Проект', items: ['Дорожная карта', 'Источники', 'Команда', 'Поддержать'] },
-        { h: 'Платформы', items: ['Evera.world', 'Persei.io', 'Библиотека Вечных', 'GitHub'] },
-        { h: 'Контакт', items: ['Telegram'] },
+        { h: 'Проект', items: [
+          { label: 'Дорожная карта', href: '#roadmap' },
+          { label: 'Источники', href: '#sources' },
+          { label: 'Команда', href: '#team' },
+          { label: 'Поддержать', href: '#support' }
+        ] },
+        { h: 'Платформы', items: [
+          { label: 'Evera.world', href: 'https://evera.world' },
+          { label: 'Persei.io', href: 'https://persei.io' },
+          { label: 'GitHub', href: 'https://github.com/msologr-cpu/pontos-world' }
+        ] },
+        { h: 'Сообщество', items: [
+          { label: 'Telegram', href: 'https://t.me/+ZUxz9TkYneZmZDFi' },
+          { label: 'Библиотека Вечных', href: 'https://persei.io/?start=ref_solo013-eternals' },
+          { label: 'Ромиосини', href: 'https://romiosini.ru/' },
+          { label: 'Патрида', href: 'https://rusgreek.ru/krasnaya-polyanaundefinedsochinskaya-gorodskaya-obschestvennaya-organizatsiya' }
+        ] },
       ],
       legal: '© Pontos AI · 2026',
       city: 'Trebizond',
@@ -228,12 +242,26 @@ const PONTOS_CONTENT = {
       sub: 'Long live Pontus.',
       cta: 'Get in touch',
       cols: [
-        { h: 'Project', items: ['Roadmap', 'Sources', 'Team', 'Support'] },
-        { h: 'Platforms', items: ['Evera.world', 'Persei.io', 'Eternals Library', 'GitHub'] },
-        { h: 'Contact', items: ['Telegram', 'Maximian Solomonidis', 'Krasnaya Polyana, Sochi'] },
+        { h: 'Project', items: [
+          { label: 'Roadmap', href: '#roadmap' },
+          { label: 'Sources', href: '#sources' },
+          { label: 'Team', href: '#team' },
+          { label: 'Support', href: '#support' }
+        ] },
+        { h: 'Platforms', items: [
+          { label: 'Evera.world', href: 'https://evera.world' },
+          { label: 'Persei.io', href: 'https://persei.io' },
+          { label: 'GitHub', href: 'https://github.com/msologr-cpu/pontos-world' }
+        ] },
+        { h: 'Community', items: [
+          { label: 'Telegram', href: 'https://t.me/+ZUxz9TkYneZmZDFi' },
+          { label: 'Eternals Library', href: 'https://persei.io/?start=ref_solo013-eternals' },
+          { label: 'Romiosini', href: 'https://romiosini.ru/' },
+          { label: 'Patrida', href: 'https://rusgreek.ru/krasnaya-polyanaundefinedsochinskaya-gorodskaya-obschestvennaya-organizatsiya' }
+        ] },
       ],
       legal: '© Pontos AI · 2026',
-      city: 'Trebizond · Krasnaya Polyana',
+      city: 'Trebizond',
     },
   },
 };
@@ -341,12 +369,26 @@ PONTOS_CONTENT.el = {
     sub: 'Long live Pontus.',
     cta: 'Επικοινωνία',
     cols: [
-      { h: 'Έργο', items: ['Πορεία', 'Πηγές', 'Ομάδα', 'Στήριξη'] },
-      { h: 'Πλατφόρμες', items: ['Evera.world', 'Persei.io', 'Eternals Library', 'GitHub'] },
-      { h: 'Επαφή', items: ['Telegram', 'Maximian Solomonidis', 'Krasnaya Polyana, Sochi'] },
+      { h: 'Έργο', items: [
+        { label: 'Πορεία', href: '#roadmap' },
+        { label: 'Πηγές', href: '#sources' },
+        { label: 'Ομάδα', href: '#team' },
+        { label: 'Στήριξη', href: '#support' }
+      ] },
+      { h: 'Πλατφόρμες', items: [
+        { label: 'Evera.world', href: 'https://evera.world' },
+        { label: 'Persei.io', href: 'https://persei.io' },
+        { label: 'GitHub', href: 'https://github.com/msologr-cpu/pontos-world' }
+      ] },
+      { h: 'Κοινότητα', items: [
+        { label: 'Telegram', href: 'https://t.me/+ZUxz9TkYneZmZDFi' },
+        { label: 'Βιβλιοθήκη των Αιωνίων', href: 'https://persei.io/?start=ref_solo013-eternals' },
+        { label: 'Ρωμιοσύνη', href: 'https://romiosini.ru/' },
+        { label: 'Πατρίδα', href: 'https://rusgreek.ru/krasnaya-polyanaundefinedsochinskaya-gorodskaya-obschestvennaya-organizatsiya' }
+      ] },
     ],
     legal: '© Pontos AI · 2026',
-    city: 'Trebizond · Krasnaya Polyana',
+    city: 'Trebizond',
   },
 };
 
@@ -453,12 +495,26 @@ PONTOS_CONTENT.tr = {
     sub: 'Yaşasın Pontus.',
     cta: 'İletişim',
     cols: [
-      { h: 'Proje', items: ['Yol haritası', 'Kaynaklar', 'Ekip', 'Destek'] },
-      { h: 'Platformlar', items: ['Evera.world', 'Persei.io', 'Eternals Library', 'GitHub'] },
-      { h: 'İletişim', items: ['Telegram', 'Maximian Solomonidis', 'Krasnaya Polyana, Soçi'] },
+      { h: 'Proje', items: [
+        { label: 'Yol haritası', href: '#roadmap' },
+        { label: 'Kaynaklar', href: '#sources' },
+        { label: 'Ekip', href: '#team' },
+        { label: 'Destek', href: '#support' }
+      ] },
+      { h: 'Platformlar', items: [
+        { label: 'Evera.world', href: 'https://evera.world' },
+        { label: 'Persei.io', href: 'https://persei.io' },
+        { label: 'GitHub', href: 'https://github.com/msologr-cpu/pontos-world' }
+      ] },
+      { h: 'Topluluk', items: [
+        { label: 'Telegram', href: 'https://t.me/+ZUxz9TkYneZmZDFi' },
+        { label: 'Ebediler Kütüphanesi', href: 'https://persei.io/?start=ref_solo013-eternals' },
+        { label: 'Romiosini', href: 'https://romiosini.ru/' },
+        { label: 'Patrida', href: 'https://rusgreek.ru/krasnaya-polyanaundefinedsochinskaya-gorodskaya-obschestvennaya-organizatsiya' }
+      ] },
     ],
     legal: '© Pontos AI · 2026',
-    city: 'Trabzon · Krasnaya Polyana',
+    city: 'Trebizond',
   },
 };
 
