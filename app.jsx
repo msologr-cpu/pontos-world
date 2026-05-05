@@ -99,7 +99,7 @@ function App() {
   
   const setTheme = (t) => { setThemeState(t); setTweak('theme', t); };
 
-  useReveal();
+  useReveal([page]);
 
   const content = PONTOS_CONTENT[lang] || PONTOS_CONTENT.ru;
   const isChat = page === 'chat';

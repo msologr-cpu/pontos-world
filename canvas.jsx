@@ -163,9 +163,9 @@ function Cursor() {
 }
 
 /* ====== Scroll reveal ====== */
-function useReveal() {
+function useReveal(deps) {
   useEffect(() => {
-    const els = document.querySelectorAll('.reveal, .reveal-stagger');
+    const els = document.querySelectorAll('.reveal:not(.in), .reveal-stagger:not(.in)');
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
@@ -176,7 +176,7 @@ function useReveal() {
     }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
     els.forEach(el => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, deps || []);
 }
 
 /* ====== Live clock ====== */
