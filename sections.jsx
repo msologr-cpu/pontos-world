@@ -1,15 +1,26 @@
 /* ============ Pontos AI: Sections ============ */
 
-function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen }) {
+function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen, navigateTo }) {
   const langs = [
     { v: 'ru', l: 'RU' },
     { v: 'en', l: 'EN' },
     { v: 'el', l: 'ΕΛ' },
     { v: 'tr', l: 'TR' },
   ];
+  const navLink = (section, label, isGold = false) => (
+    <a 
+      className="nav-link" 
+      href={`/${lang}/${section}`} 
+      onClick={(e) => { e.preventDefault(); navigateTo(lang, section); setMobileOpen(false); }}
+      style={isGold ? { color: 'var(--gold)' } : {}}
+    >
+      {label}
+    </a>
+  );
+  
   return (
     <nav className="nav">
-      <div className="nav-logo" data-cursor="hover">
+      <div className="nav-logo" data-cursor="hover" onClick={() => navigateTo(lang, 'home')} style={{ cursor: 'pointer' }}>
         <svg viewBox="0 0 32 32" fill="none">
           <circle cx="16" cy="16" r="14" stroke="currentColor" strokeWidth="1.5" />
           <path d="M4 16 Q10 10, 16 16 T28 16" stroke="var(--gold, #c9a96e)" strokeWidth="1.5" fill="none" />
@@ -19,11 +30,11 @@ function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen }) {
       </div>
 
       <div className="nav-links">
-        <a className="nav-link" href="#roadmap">{content.nav.work}</a>
-        <a className="nav-link" href="#sources">{content.nav.services}</a>
-        <a className="nav-link" href="#team">{content.nav.about}</a>
-        <a className="nav-link" href="#support">{content.nav.contact}</a>
-        <a className="nav-link" href="#chat" style={{ color: 'var(--gold)' }}>{content.nav.chat}</a>
+        {navLink('roadmap', content.nav.work)}
+        {navLink('sources', content.nav.services)}
+        {navLink('team', content.nav.about)}
+        {navLink('support', content.nav.contact)}
+        {navLink('chat', content.nav.chat, true)}
       </div>
 
       <div className="nav-right" style={{ position: 'relative', zIndex: 101 }}>
@@ -53,21 +64,21 @@ function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen }) {
             <button key={v} className={lang === v ? 'active' : ''} onClick={() => { setLang(v); setMobileOpen(false); }}>{l}</button>
           ))}
         </div>
-        <a className="nav-link" href="#roadmap" onClick={() => setMobileOpen(false)}>{content.nav.work}</a>
-        <a className="nav-link" href="#sources" onClick={() => setMobileOpen(false)}>{content.nav.services}</a>
-        <a className="nav-link" href="#team" onClick={() => setMobileOpen(false)}>{content.nav.about}</a>
-        <a className="nav-link" href="#support" onClick={() => setMobileOpen(false)}>{content.nav.contact}</a>
-        <a className="nav-link" href="#chat" onClick={() => setMobileOpen(false)} style={{ color: 'var(--gold)' }}>{content.nav.chat}</a>
+        {navLink('roadmap', content.nav.work)}
+        {navLink('sources', content.nav.services)}
+        {navLink('team', content.nav.about)}
+        {navLink('support', content.nav.contact)}
+        {navLink('chat', content.nav.chat, true)}
       </div>
     </nav>
   );
 }
 
-function Hero({ content }) {
+function Hero({ content, navigateTo, lang }) {
   const t = useClock();
   const time = t.toLocaleTimeString('en-GB', { hour12: false, timeZone: 'Europe/Athens' });
   return (
-    <section className="hero" id="top">
+    <section className="hero" id="home">
       <div className="hero-meta">
         <div className="hero-coords mono">
           <div className="hero-coords-line">{content.hero.coords}</div>
@@ -91,10 +102,10 @@ function Hero({ content }) {
           {content.hero.tagline}
         </div>
         <div className="hero-cta" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-          <a href="#chat" className="btn btn-gold">
+          <a href={`/${lang}/chat`} onClick={(e) => { e.preventDefault(); navigateTo(lang, 'chat'); }} className="btn btn-gold">
             {content.hero.cta} <span className="arrow">→</span>
           </a>
-          <a href="#roadmap" className="btn">
+          <a href={`/${lang}/roadmap`} onClick={(e) => { e.preventDefault(); navigateTo(lang, 'roadmap'); }} className="btn">
             {content.hero.ctaSecondary} <span className="arrow">↓</span>
           </a>
         </div>
