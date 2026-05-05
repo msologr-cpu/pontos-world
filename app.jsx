@@ -7,11 +7,31 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [lang, setLangState] = useState(tweaks.language || 'ru');
+  
+  const [lang, setLangState] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lang') || tweaks.language || 'ru';
+  });
+
   const [theme, setThemeState] = useState(tweaks.theme || 'dark');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hash, setHash] = useState(window.location.hash);
 
-  useEffect(() => { setLangState(tweaks.language || 'ru'); }, [tweaks.language]);
+  useEffect(() => {
+    const handleHash = () => setHash(window.location.hash);
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  useEffect(() => {
+    if (hash && hash !== '#chat') {
+      setTimeout(() => {
+        const el = document.getElementById(hash.slice(1));
+        if (el) el.scrollIntoView();
+      }, 50);
+    }
+  }, [hash]);
+
   useEffect(() => { setThemeState(tweaks.theme || 'dark'); }, [tweaks.theme]);
 
   useEffect(() => {
@@ -19,12 +39,19 @@ function App() {
     document.documentElement.setAttribute('lang', lang);
   }, [theme, lang]);
 
-  const setLang = (l) => { setLangState(l); setTweak('language', l); };
+  const setLang = (l) => { 
+    setLangState(l); 
+    setTweak('language', l); 
+    const url = new URL(window.location);
+    url.searchParams.set('lang', l);
+    window.history.pushState({}, '', url);
+  };
   const setTheme = (t) => { setThemeState(t); setTweak('theme', t); };
 
   useReveal();
 
   const content = PONTOS_CONTENT[lang] || PONTOS_CONTENT.ru;
+  const isChat = hash === '#chat';
 
   return (
     <>
@@ -37,17 +64,24 @@ function App() {
           content={content}
           mobileOpen={mobileOpen} setMobileOpen={setMobileOpen}
         />
-        <Hero content={content} />
-        <Marquee items={content.marquee} />
-        <StatsBand content={content} />
-        <Manifesto content={content} />
-        <Pillars content={content} />
-        <Sources content={content} />
-        <Roadmap content={content} />
-        <ChatBlock content={content} />
-        <Team content={content} />
-        <Support content={content} />
-        <Footer content={content} />
+        {isChat ? (
+          <div style={{ paddingTop: 80, paddingBottom: 40, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <ChatBlock content={content} />
+          </div>
+        ) : (
+          <>
+            <Hero content={content} />
+            <Marquee items={content.marquee} />
+            <StatsBand content={content} />
+            <Manifesto content={content} />
+            <Pillars content={content} />
+            <Sources content={content} />
+            <Roadmap content={content} />
+            <Team content={content} />
+            <Support content={content} />
+            <Footer content={content} />
+          </>
+        )}
       </div>
 
       <TweaksPanel title="Tweaks">

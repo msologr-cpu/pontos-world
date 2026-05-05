@@ -279,23 +279,41 @@ function Roadmap({ content }) {
 /* ====== AI Chat — real Pontos AI via persei.io ====== */
 function ChatBlock({ content }) {
   return (
-    <section id="chat" className="chat-section">
+    <section id="chat" className="chat-section" style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <div className="reveal">
         <div className="section-label">{content.chat.label}</div>
         <h2 className="section-title">
           {content.chat.title}<em>{content.chat.titleEm}</em>
         </h2>
+        <p className="section-lede">{content.chat.desc}</p>
       </div>
 
-      <div className="chat-card reveal" style={{ height: '700px', background: 'transparent', padding: 0, overflow: 'hidden' }}>
-        <iframe
-          src="https://persei.io/chat/pontos"
-          width="100%"
-          height="100%"
-          style={{ border: 'none', borderRadius: '24px' }}
-          title="Pontos AI"
-          allow="microphone"
-        />
+      <div className="chat-card reveal">
+        <div className="chat-card-head">
+          <div className="chat-avatar">Π</div>
+          <div>
+            <div className="chat-name">Pontos AI</div>
+            <div className="chat-sub">Language Engine</div>
+          </div>
+          <div className="chat-status">
+            <span className="chat-dot"></span> Online
+          </div>
+        </div>
+        <div className="chat-body">
+          <div className="chat-bubble">
+            <div className="chat-bubble-meta">SYSTEM</div>
+            {content.chat.systemMsg || 'Γεια σου! Я — цифровой мозг понтийского языка. Я знаю более 36 000 слов, понимаю 20 диалектов и могу объяснить происхождение любого термина. О чем бы вы хотели узнать?'}
+          </div>
+          <div className="chat-examples">
+            {content.chat.examples.map((ex, i) => (
+              <button key={i} className="chat-example">{ex}</button>
+            ))}
+          </div>
+          <div className="chat-input-row">
+            <input type="text" className="chat-input" placeholder={content.chat.placeholder} />
+            <button className="btn btn-gold chat-send">{content.chat.cta} <span className="arrow">→</span></button>
+          </div>
+        </div>
       </div>
     </section>
   );
