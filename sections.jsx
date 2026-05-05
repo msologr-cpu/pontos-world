@@ -26,7 +26,7 @@ function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen }) {
         <a className="nav-link" href="#chat" style={{ color: 'var(--gold)' }}>{content.nav.chat}</a>
       </div>
 
-      <div className="nav-right">
+      <div className="nav-right" style={{ position: 'relative', zIndex: 101 }}>
         <div className="lang-toggle">
           {langs.map(({ v, l }) => (
             <button key={v} className={lang === v ? 'active' : ''} onClick={() => setLang(v)}>{l}</button>
@@ -221,20 +221,45 @@ function Roadmap({ content }) {
         </h2>
       </div>
       <div className="work-list reveal-stagger">
+        <style dangerouslySetInnerHTML={{__html: `
+          .work-summary::-webkit-details-marker { display: none; }
+          .work-details-wrapper[open] .work-arrow svg { transform: rotate(180deg); transition: transform 0.3s; }
+          .work-arrow svg { transition: transform 0.3s; }
+          @media (min-width: 769px) {
+            .work-details-inner { margin-left: 90px; margin-right: 90px; }
+          }
+        `}} />
         {content.work.items.map((w, i) => (
-          <div className="work-item" key={i}>
-            <div className="work-num">{w.num}</div>
-            <div className="work-title">{w.title}</div>
-            <div className="work-desc">{w.desc}</div>
-            <div className="work-tags">
-              {w.tags.map((t, j) => <span className="work-tag" key={j}>{t}</span>)}
-            </div>
-            <div className="work-arrow">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 7 H12 M8 3 L12 7 L8 11" stroke="currentColor" strokeWidth="1.4" fill="none" />
-              </svg>
-            </div>
-          </div>
+          <details className="work-details-wrapper" key={i} style={{ borderBottom: '1px solid var(--line)' }}>
+            <summary className="work-item work-summary" style={{ borderBottom: 'none', listStyle: 'none', cursor: 'pointer', outline: 'none' }}>
+              <div className="work-num">{w.num}</div>
+              <div className="work-title">{w.title}</div>
+              <div className="work-desc">{w.desc}</div>
+              <div className="work-tags">
+                {w.tags.map((t, j) => <span className="work-tag" key={j}>{t}</span>)}
+              </div>
+              <div className="work-arrow">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7 H12 M8 3 L12 7 L8 11" stroke="currentColor" strokeWidth="1.4" fill="none" />
+                </svg>
+              </div>
+            </summary>
+            {w.details && (
+              <div style={{ padding: '0 0 32px 0' }}>
+                <div className="work-details-inner" style={{
+                  padding: '20px 24px',
+                  background: 'rgba(201, 169, 110, 0.05)',
+                  border: '1px solid var(--line)',
+                  borderRadius: '12px',
+                  fontSize: '15px',
+                  color: 'var(--fg)',
+                  lineHeight: '1.6'
+                }}>
+                  {w.details}
+                </div>
+              </div>
+            )}
+          </details>
         ))}
       </div>
     </section>
@@ -243,84 +268,6 @@ function Roadmap({ content }) {
 
 /* ====== AI Chat — real Pontos AI via persei.io ====== */
 function ChatBlock({ content }) {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [streamText, setStreamText] = useState('');
-  const bodyRef = useRef(null);
-  const inputRef = useRef(null);
-  const examples = content.chat.examples;
-
-  // Auto-scroll on new messages
-  useEffect(() => {
-    if (bodyRef.current) {
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-    }
-  }, [messages, streamText]);
-
-  const sendMessage = async (text) => {
-    const userText = (text || input).trim();
-    if (!userText || loading) return;
-    setInput('');
-    setLoading(true);
-    setStreamText('');
-
-    const newMessages = [...messages, { role: 'user', content: userText }];
-    setMessages(newMessages);
-
-    try {
-      const res = await fetch('https://persei.io/api/openrouter-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash-preview',
-          eternalId: 'pontos',
-          stream: true,
-          messages: newMessages.map(m => ({ role: m.role, content: m.content })),
-          max_tokens: 1200,
-          temperature: 0.7,
-        }),
-      });
-
-      if (!res.ok) throw new Error('Network error ' + res.status);
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let accumulated = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const data = line.slice(6).trim();
-          if (data === '[DONE]') continue;
-          try {
-            const parsed = JSON.parse(data);
-            const delta = parsed.choices?.[0]?.delta?.content || '';
-            accumulated += delta;
-            setStreamText(accumulated);
-          } catch (_) {}
-        }
-      }
-
-      setMessages(prev => [...prev, { role: 'assistant', content: accumulated }]);
-      setStreamText('');
-    } catch (err) {
-      setMessages(prev => [...prev, { role: 'assistant', content: '⚠️ ' + err.message }]);
-      setStreamText('');
-    } finally {
-      setLoading(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
-  };
-
-  const handleKey = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-  };
-
   return (
     <section id="chat" className="chat-section">
       <div className="reveal">
@@ -330,74 +277,15 @@ function ChatBlock({ content }) {
         </h2>
       </div>
 
-      <div className="chat-card reveal">
-        <div className="chat-card-head">
-          <div className="chat-avatar">Π</div>
-          <div>
-            <div className="chat-name">Πόντος AI</div>
-            <div className="chat-sub mono">{content.chat.desc}</div>
-          </div>
-          <div className="chat-status mono">
-            <span className={`chat-dot ${loading ? 'pulsing' : ''}`} />
-            {loading ? '...' : 'online'}
-          </div>
-        </div>
-
-        <div className="chat-body" ref={bodyRef} style={{ overflowY: 'auto', maxHeight: 420 }}>
-          {/* Welcome bubble */}
-          {messages.length === 0 && (
-            <div className="chat-bubble">
-              <div className="chat-bubble-meta mono">Πόντος AI · {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</div>
-              <div>{content.chat.placeholder}</div>
-            </div>
-          )}
-
-          {/* Message history */}
-          {messages.map((m, i) => (
-            <div key={i} className={`chat-bubble ${m.role === 'user' ? 'chat-bubble-user' : ''}`}>
-              <div className="chat-bubble-meta mono">
-                {m.role === 'user' ? content.chat.you || 'You' : 'Πόντος AI'} · {new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
-              </div>
-              <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{m.content}</div>
-            </div>
-          ))}
-
-          {/* Streaming response */}
-          {streamText && (
-            <div className="chat-bubble">
-              <div className="chat-bubble-meta mono">Πόντος AI · typing…</div>
-              <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.7 }}>{streamText}<span className="chat-cursor">▌</span></div>
-            </div>
-          )}
-
-          {/* Example chips — show only at start */}
-          {messages.length === 0 && (
-            <div className="chat-examples">
-              {examples.map((e, i) => (
-                <button key={i} className="chat-example" onClick={() => sendMessage(e)}>{e}</button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="chat-input-row">
-          <input
-            ref={inputRef}
-            className="chat-input"
-            value={input}
-            onChange={(ev) => setInput(ev.target.value)}
-            onKeyDown={handleKey}
-            placeholder="νερόν · вода · water · su"
-            disabled={loading}
-          />
-          <button
-            className="btn btn-gold chat-send"
-            onClick={() => sendMessage()}
-            disabled={loading || !input.trim()}
-          >
-            {loading ? '…' : content.chat.cta} <span className="arrow">{loading ? '' : '→'}</span>
-          </button>
-        </div>
+      <div className="chat-card reveal" style={{ height: '700px', background: 'transparent', padding: 0, overflow: 'hidden' }}>
+        <iframe
+          src="https://persei.io/chat/pontos"
+          width="100%"
+          height="100%"
+          style={{ border: 'none', background: 'transparent' }}
+          title="Pontos AI Chat"
+          allow="microphone"
+        />
       </div>
     </section>
   );
