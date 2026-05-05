@@ -19,6 +19,7 @@ function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen, navigateTo 
   );
   
   return (
+    <>
     <nav className="nav">
       <div className="nav-logo" data-cursor="hover" onClick={() => navigateTo(lang, 'home')} style={{ cursor: 'pointer' }}>
         <svg viewBox="0 0 32 32" fill="none">
@@ -56,21 +57,22 @@ function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen, navigateTo 
           </svg>
         </button>
       </div>
-
-      <div className={`nav-mobile-overlay ${mobileOpen ? 'open' : ''}`} onClick={() => setMobileOpen(false)} />
-      <div className={`nav-mobile ${mobileOpen ? 'open' : ''}`}>
-        <div className="nav-mobile-langs">
-          {langs.map(({ v, l }) => (
-            <button key={v} className={lang === v ? 'active' : ''} onClick={() => { setLang(v); setMobileOpen(false); }}>{l}</button>
-          ))}
-        </div>
-        {navLink('roadmap', content.nav.work)}
-        {navLink('sources', content.nav.services)}
-        {navLink('team', content.nav.about)}
-        {navLink('support', content.nav.contact)}
-        {navLink('chat', content.nav.chat, true)}
-      </div>
     </nav>
+
+    <div className={`nav-mobile-overlay ${mobileOpen ? 'open' : ''}`} onClick={() => setMobileOpen(false)} />
+    <div className={`nav-mobile ${mobileOpen ? 'open' : ''}`}>
+      <div className="nav-mobile-langs">
+        {langs.map(({ v, l }) => (
+          <button key={v} className={lang === v ? 'active' : ''} onClick={() => { setLang(v); setMobileOpen(false); }}>{l}</button>
+        ))}
+      </div>
+      {navLink('roadmap', content.nav.work)}
+      {navLink('sources', content.nav.services)}
+      {navLink('team', content.nav.about)}
+      {navLink('support', content.nav.contact)}
+      {navLink('chat', content.nav.chat, true)}
+    </div>
+  </>
   );
 }
 
