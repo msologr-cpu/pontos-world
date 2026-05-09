@@ -11,7 +11,7 @@ function parseURL() {
   const parts = path.split('/').filter(Boolean);
   let lang = null;
   let section = 'home';
-  const validLangs = ['ru', 'en', 'el', 'tr'];
+  const validLangs = ['ru', 'en', 'el'];
   const validSections = ['roadmap', 'sources', 'team', 'support', 'chat'];
 
   if (parts.length >= 1 && validLangs.includes(parts[0])) {
@@ -154,7 +154,6 @@ function App() {
               { value: 'ru', label: 'RU' },
               { value: 'en', label: 'EN' },
               { value: 'el', label: 'ΕΛ' },
-              { value: 'tr', label: 'TR' },
             ]}
             onChange={setLang}
           />

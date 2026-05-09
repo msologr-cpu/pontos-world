@@ -5,7 +5,6 @@ function NavBar({ lang, setLang, content, mobileOpen, setMobileOpen, navigateTo 
     { v: 'ru', l: 'RU' },
     { v: 'en', l: 'EN' },
     { v: 'el', l: 'ΕΛ' },
-    { v: 'tr', l: 'TR' },
   ];
   const PERSEI_URL = 'https://persei.io/?start=ref_solo013-eternals';
   

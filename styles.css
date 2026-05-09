@@ -507,11 +507,11 @@ section { position: relative; padding: 140px 40px; }
 /* ====== Services ====== */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid var(--line);
 }
 .service-card {
-  padding: 50px 40px;
+  padding: 44px 36px;
   border-bottom: 1px solid var(--line);
   border-right: 1px solid var(--line);
   position: relative;
@@ -519,7 +519,8 @@ section { position: relative; padding: 140px 40px; }
   overflow: hidden;
   transition: background 0.4s;
 }
-.service-card:nth-child(2n) { border-right: none; }
+.service-card:nth-child(2n) { border-right: 1px solid var(--line); }
+.service-card:nth-child(3n) { border-right: none; }
 .service-card::before {
   content: ''; position: absolute; inset: 0;
   background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), var(--glow), transparent 60%);
@@ -533,7 +534,7 @@ section { position: relative; padding: 140px 40px; }
   margin-bottom: 32px;
 }
 .service-card-title {
-  font-size: clamp(24px, 2.6vw, 36px);
+  font-size: clamp(20px, 2vw, 28px);
   font-weight: 500; letter-spacing: -0.02em;
   margin-bottom: 20px;
   line-height: 1.05;
@@ -773,7 +774,7 @@ section { position: relative; padding: 140px 40px; }
   section { padding: 80px 20px; }
   .manifesto { grid-template-columns: 1fr; gap: 40px; }
   .services-grid { grid-template-columns: 1fr; }
-  .service-card { border-right: none !important; padding: 36px 20px; }
+  .service-card { border-right: none !important; padding: 32px 20px; }
   .pillars { grid-template-columns: 1fr 1fr; }
   .pillar { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 32px 20px; }
   .pillar:nth-child(2n) { border-right: none; }
